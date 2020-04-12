@@ -1,0 +1,9 @@
+,Number of customers,Gross margins,"Marketing costs, next period"
+Platinum (top 20%),200,4410,0
+Platinum (low 80%),800,2145,0
+Gold (top 20%),1100,1100,0
+Gold (low 80%),4300,430,0
+Silver (top 20%),6800,86,0
+Silver (low 80%),26600,16.4,0
+Inactive customers,18200,-2,0
+Lost customers,0,0,0
