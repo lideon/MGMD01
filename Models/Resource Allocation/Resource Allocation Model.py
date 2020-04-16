@@ -7,28 +7,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# change these:
-base_data = pd.read_csv(r"Resource Allocation\Resource Allocation Base.csv", header = 0, index_col = 0)
-effort_data = pd.read_csv(r"Resource Allocation\Resource Allocation Effort.csv", header = 0, index_col = 0)
-impact_data = pd.read_csv(r"Resource Allocation\Resource Allocation Impact.csv", header = 0, index_col = 0)
-base_data.sort_index(inplace=True)
-effort_data.sort_index(inplace=True)
-impact_data.sort_index(inplace=True)
-
-# 14 Reigions, at most 52 in total, no negative
-
-# Constraint 0 < x1 + x2 ... x14 < 52
-linearConstraint = LinearConstraint([1 for i in range(0, base_data.shape[0])],[0], [base_data["Effort"].sum()])
-# Constraint 0 < xi < 52 for i in range(0, number of areas)
-bounds = Bounds([0 for i in range(0, base_data.shape[0])], [base_data["Effort"].sum() for i in range(0, base_data.shape[0])])
-base_effort = base_data["Effort"]
-margin = base_data["Margin"]
-cost = base_data["Cost per Effort"]
-order = base_data.index
-
-vars = [10, 10]
-vars_final = [(i, i) for i in range (0, len(order))]
-
 # allocation function to optimize
 def residual(vars, effort, sales):
     c = vars[0]
@@ -52,6 +30,28 @@ def profit(effort, func_coef, sales, margin, cost, order):
 
 def individual_profit(effort, func_coef, maximum, minimum, margin, cost):
     return margin*allocation_func(func_coef, maximum, minimum, effort) - cost*effort
+
+# change these:
+base_data = pd.read_csv(r"Resource Allocation\Resource Allocation Base.csv", header = 0, index_col = 0)
+effort_data = pd.read_csv(r"Resource Allocation\Resource Allocation Effort.csv", header = 0, index_col = 0)
+impact_data = pd.read_csv(r"Resource Allocation\Resource Allocation Impact.csv", header = 0, index_col = 0)
+base_data.sort_index(inplace=True)
+effort_data.sort_index(inplace=True)
+impact_data.sort_index(inplace=True)
+
+# 14 Reigions, at most 52 in total, no negative
+
+# Constraint 0 < x1 + x2 ... x14 < 52
+linearConstraint = LinearConstraint([1 for i in range(0, base_data.shape[0])],[0], [base_data["Effort"].sum()])
+# Constraint 0 < xi < 52 for i in range(0, number of areas)
+bounds = Bounds([0 for i in range(0, base_data.shape[0])], [base_data["Effort"].sum() for i in range(0, base_data.shape[0])])
+base_effort = base_data["Effort"]
+margin = base_data["Margin"]
+cost = base_data["Cost per Effort"]
+order = base_data.index
+
+vars = [10, 10]
+vars_final = [(i, i) for i in range (0, len(order))]
 
 effort_series = (np.linspace(0.0, 16.0, num=17))
 # Determine C/D in the allocation function
